@@ -1,0 +1,20 @@
+package main
+
+import (
+  "<%- repoName %>/<%- userName %>/<%- projectName %>/controllers"
+  "<%- repoName %>/<%- userName %>/<%- projectName %>/controllers/_routing"
+  "<%- repoName %>/<%- userName %>/<%- projectName %>/server"
+  "net/http"
+)
+
+func main() {
+  srv := &server.Server{Addr: "http://localhost", Port: "8080"}
+  r, err := _routing.MainController(controllers.Routes())
+  if err != nil {
+    panic(err)
+  }
+
+  if err = http.ListenAndServe(srv.PortAddress(), r); err != nil {
+    panic(err)
+  }
+}
