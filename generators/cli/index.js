@@ -1,8 +1,8 @@
-const Generator = require('../app/index')
+const Generator = require('../../helper/generator')
 
 class CliGenerator extends Generator {
   constructor (args, options) {
-    super(args, options, 'cli', ['repoName', 'projectName', 'userName'])
+    super(args, options, 'cli', ['repoName', 'projectName', 'repoUser'])
   }
 
   async prompting () {

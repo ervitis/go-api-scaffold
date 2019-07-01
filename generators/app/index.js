@@ -1,48 +1,27 @@
-const Generator = require('yeoman-generator')
+const Generator = require('../../helper/generator.js')
+const mkdir = require('mkdirp')
 
-class GoApiScaffoldGenerator extends Generator {
+module.exports = class extends Generator {
   constructor (args, opts) {
-    super(args, opts)
+    super(args, opts, 'app', ['projectName', 'repoUser', 'repoName', 'dir'])
 
-    try {
-      this.argument('appname', { type: String, required: true })
-    } catch (e) {
-      this.log(`${e.message}`)
-      process.exit(-1)
-    }
-
+    this.listdirs = ['../cli/index.js', '../controllers/index.js', '../server/index.js']
   }
 
-  method1() {
-    this.log('method 1 ran')
+  prompting () {
+    return super.prompting().then(props => {
+      const compose = src => this.composeWith(require.resolve(src), props)
+
+      props.silent = true
+
+      this.listdirs.forEach(compose)
+
+      this.props = props
+    })
   }
 
-  method2() {
-    this.log('method 2 ran')
-  }
-
-  async prompting() {
-    this.answers = await this.prompt([
-      {
-        type: 'input',
-        name: 'name',
-        message: 'your project name',
-        default: this.appname
-      },
-      {
-        type: 'confirm',
-        name: 'cool',
-        message: 'would you like to enable the cool feature?'
-      }
-    ])
-
-    this.log('app name', this.answers.name)
-    this.log('cool feature', this.answers.cool)
-  }
-
-  writing() {
-    this.log(`cool feature ${this.answers.cool}`)
+  writing () {
+    mkdir.sync(this.props.dir)
+    this.destinationRoot(this.props.dir)
   }
 }
-
-module.exports = GoApiScaffoldGenerator
