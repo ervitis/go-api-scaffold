@@ -1,6 +1,6 @@
 const Generator = require('../../helper/generator')
 
-class CliGenerator extends Generator {
+module.exports = class extends Generator {
   constructor (args, options) {
     super(args, options, 'cli', ['repoName', 'projectName', 'repoUser'])
   }
@@ -17,9 +17,7 @@ class CliGenerator extends Generator {
     )
   }
 
-  scheduleInstallTask (installer, paths, options, spawnOptions) {
+  install() {
     this.spawnCommandSync('go', ['mod', 'init'])
   }
 }
-
-module.exports = CliGenerator
